@@ -3,6 +3,7 @@ import socket
 FLAGS = _ = None
 DEBUG = False
 
+
 def main():
     if DEBUG:
         print(f'Parsed arguments {FLAGS}')
@@ -12,30 +13,39 @@ def main():
 
     print(f'Ready to send using {sock}')
 
-    data = input('학번: ').strip()
+    while True:
 
-    sock.sendto(data.encode('utf-8'), (FLAGS.address, FLAGS.port))
+        data = input('Data: ').strip()
 
-    print(f'Send {data} to ({FLAGS.address}, {FLAGS.port})')
+        sock.sendto(data.encode('utf-8'),
+                    (FLAGS.address, FLAGS.port))
 
-    data, server = sock.recvfrom(2**16)
+        print(f'Send {data} to ({FLAGS.address}, {FLAGS.port})')
 
-    data = data.decode('utf-8')
+        data, server = sock.recvfrom(2 ** 16)
 
-    print(f'Received {data} from {server}')
+        data = data.decode('utf-8')
+
+        print(f'Received {data} from {server}')
+
 
 if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--debug', action='store_true',
+    parser.add_argument('--debug',
+                        action='store_true',
                         help='The present debug message')
 
-    parser.add_argument('--address', type=str, required=True,
+    parser.add_argument('--address',
+                        type=str,
+                        required=True,
                         help='The address to send data')
 
-    parser.add_argument('--port', type=int, required=True,
+    parser.add_argument('--port',
+                        type=int,
+                        required=True,
                         help='The port to send data')
 
     FLAGS, _ = parser.parse_known_args()
